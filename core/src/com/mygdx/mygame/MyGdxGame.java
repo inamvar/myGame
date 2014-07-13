@@ -19,7 +19,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	private ShotManager shotManager;
 	private AnimatedSprite spaceshipAnimated;
 	private Music gameMusic;
-	
+	private Enemy enemy;
 	@Override
 	public void create () {
 		
@@ -34,6 +34,9 @@ public class MyGdxGame extends ApplicationAdapter {
 		
 		Texture shotTexture = new Texture(Gdx.files.internal("shot.png"));
 		shotManager = new ShotManager(shotTexture);
+		Texture enemyTexture = new Texture(Gdx.files.internal("enemy.png"));
+		enemy = new Enemy(enemyTexture);
+		
 		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
 		gameMusic.setVolume(.50f);
 		gameMusic.setLooping(true);
@@ -48,11 +51,13 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(background, 0, 0);
 		spaceshipAnimated.draw(batch);
+		enemy.draw(batch);
 		shotManager.draw(batch);
 		batch.end();
 		
 		handleInput();
 		spaceshipAnimated.move();
+		enemy.update();
 		shotManager.update();
 	}
 

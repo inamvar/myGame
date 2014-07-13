@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 public class AnimatedSprite {
 
@@ -83,19 +84,31 @@ public class AnimatedSprite {
 		sprite.setPosition(sprite.getX() + xMovement, sprite.getY() + yMovement);
 
 		if (sprite.getX() < 0) {
-			sprite.setPosition(0, 0);
-			velocity.x = 0;
+			sprite.setX(0);
+			
 		}
 
 		if (sprite.getX() + getSpriteWidth() > MyGdxGame.SCREEN_WIDTH) {
-			sprite.setPosition(MyGdxGame.SCREEN_WIDTH - getSpriteWidth(), 0);
-			velocity.x = 0;
+			sprite.setX(MyGdxGame.SCREEN_WIDTH - getSpriteWidth());
+			
 		}
 	}
 
 	public void setVelocity(Vector2 velocity) {
 
 		this.velocity = velocity;
+	}
+
+	public int getWidth() {
+		return (int) getSpriteWidth();
+	}
+
+	public int getHeight() {
+		return (int) (sprite.getHeight() /FRAMES_ROW);
+	}
+
+	public void changeDirection() {
+		velocity.x = - velocity.x; 
 	}
 
 }
