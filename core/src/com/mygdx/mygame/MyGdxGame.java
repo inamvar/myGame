@@ -2,11 +2,13 @@ package com.mygdx.mygame;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 
 public class MyGdxGame extends ApplicationAdapter {
 	public static final int SCREEN_HEIGHT = 480;
@@ -16,6 +18,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private ShotManager shotManager;
 	private AnimatedSprite spaceshipAnimated;
+	private Music gameMusic;
 	
 	@Override
 	public void create () {
@@ -31,6 +34,10 @@ public class MyGdxGame extends ApplicationAdapter {
 		
 		Texture shotTexture = new Texture(Gdx.files.internal("shot.png"));
 		shotManager = new ShotManager(shotTexture);
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
+		gameMusic.setVolume(.50f);
+		gameMusic.setLooping(true);
+		gameMusic.play();
 	}
 
 	@Override
@@ -52,8 +59,10 @@ public class MyGdxGame extends ApplicationAdapter {
 	private void handleInput() {
 		if(Gdx.input.isTouched())
 		{
-			int xTouch = Gdx.input.getX();
-			if(xTouch > spaceshipAnimated.getX())
+			Vector3 touchPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+			camera.unproject(touchPosition);
+			
+			if(touchPosition.x > spaceshipAnimated.getX())
 			{
 				spaceshipAnimated.moveRight();
 			}else
